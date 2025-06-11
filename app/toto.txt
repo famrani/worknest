@@ -1,0 +1,25 @@
+npm error code ERESOLVE
+npm error ERESOLVE unable to resolve dependency tree
+npm error
+npm error While resolving: app2@0.0.1
+npm error Found: rxjs@7.8.2
+npm error node_modules/rxjs
+npm error   rxjs@"~7.8.2" from the root project
+npm error
+npm error Could not resolve dependency:
+npm error peer rxjs@"^5.5.0 || ^6.5.0" from @ionic-native/core@5.36.0
+npm error node_modules/@ionic-native/core
+npm error   @ionic-native/core@"^5.36.0" from the root project
+npm error   peer @ionic-native/core@"^5.1.0" from @ionic-native/barcode-scanner@5.36.0
+npm error   node_modules/@ionic-native/barcode-scanner
+npm error     @ionic-native/barcode-scanner@"^5.36.0" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry
+npm error this command with --force or --legacy-peer-deps
+npm error to accept an incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error /Users/faycalamrani/.npm/_logs/2025-04-24T10_54_15_573Z-eresolve-report.txt
+
+npm error A complete log of this run can be found in: /Users/faycalamrani/.npm/_logs/2025-04-24T10_54_15_573Z-debug-0.log

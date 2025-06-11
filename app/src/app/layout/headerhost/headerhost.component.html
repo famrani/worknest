@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg fixed-top bg-light">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/host/dashboard">
+      WorkNest Host
+    </a>
+
+    <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#hostNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="hostNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" *ngIf="!layoutSvc.wnGuest?.fullname">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/listings']">Find a Space</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/become-a-host']">Become a Host</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            {{ layoutSvc.wnGuest?.fullname || 'Guest' }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li *ngIf="!layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/login']">Login</a>
+            </li>
+            <li *ngIf="!layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/signup']">Signup</a>
+            </li>
+            <li *ngIf="layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/changepwd']">Change Password</a>
+              <a class="dropdown-item" [routerLink]="['/profile']">Personal Info</a>
+              <a class="dropdown-item" [routerLink]="['/host/listings']">Listings</a>
+              <a class="dropdown-item" routerLink="/host/bookings">Bookings</a>
+              <a class="dropdown-item" routerLink="/host/payouts">Payouts</a>
+              <a class="dropdown-item" routerLink="/messages">Messages</a>
+              <a class="dropdown-item" routerLink="/ratings">Reviews</a>
+              <hr class="dropdown-divider">
+              <a class="dropdown-item" [routerLink]="['/home']">Switch to Guest</a>
+              <a class="dropdown-item text-danger" (click)="logout()">Logout</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/faq']">FAQ</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language Dropdown -->
+        <li class="nav-item dropdown ms-2">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            🌐 {{ layoutSvc.language.toUpperCase() }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="setLanguage('en')">🇬🇧 English</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('fr')">🇫🇷 Français</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('es')">🇪🇸 Español</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('it')">🇮🇹 Italiano</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('nl')">🇳🇱 Nederlands</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('de')">🇩🇪 Deutsch</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>

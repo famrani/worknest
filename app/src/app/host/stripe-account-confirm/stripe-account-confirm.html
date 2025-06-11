@@ -1,0 +1,13 @@
+<header class="masthead bg-light">
+    <div class="masthead-content">
+      <div class="container text-center">
+        <h1 class="mb-4 text-primary fw-bold">Stripe Account Confirmation</h1>
+        <p class="lead">{{ message }}</p>
+        <div class="mt-4">
+          <a class="btn btn-primary" routerLink="/home">Return to Home</a>
+          <a *ngIf="stripeAccountId" class="btn btn-outline-secondary ms-2" routerLink="/become-a-host">Continue Hosting</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  

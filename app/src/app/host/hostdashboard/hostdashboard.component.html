@@ -1,0 +1,63 @@
+<section class="pt-5 mt-4">
+  <div class="container">
+    <h2 class="mb-4">Welcome back, Host!</h2>
+
+    <!-- Dashboard Summary Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h6 class="text-muted">Total Earnings</h6>
+            <h3 class="fw-bold">€1,250</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h6 class="text-muted">Upcoming Bookings</h6>
+            <h3 class="fw-bold">3</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h6 class="text-muted">Listing Views This Week</h6>
+            <h3 class="fw-bold">78</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming Bookings -->
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-header bg-white">
+        <h5 class="mb-0">Next Bookings</h5>
+      </div>
+      <div class="card-body">
+        <div *ngIf="upcomingBookings?.length > 0; else noBookings">
+          <div *ngFor="let booking of upcomingBookings" class="mb-3 border-bottom pb-2">
+            <h6 class="mb-1">{{ booking.spaceTitle }}</h6>
+            <p class="mb-0 text-muted">
+              {{ booking.date }} — {{ booking.time }} | {{ booking.guestName }}
+            </p>
+          </div>
+        </div>
+        <ng-template #noBookings>
+          <p class="text-muted">You have no upcoming bookings.</p>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-3">
+      <div class="col-md-6">
+        <a class="btn btn-primary w-100 py-3" routerLink="/host/listings/new">+ Add New Listing</a>
+      </div>
+      <div class="col-md-6">
+        <a class="btn btn-outline-secondary w-100 py-3" routerLink="/host/messages">📩 Check Messages</a>
+      </div>
+    </div>
+  </div>
+</section>

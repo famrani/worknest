@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WorkNest - Réservation Visiteur</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 2rem; }
+    #calendar { background: #fff; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    .fc-toolbar-title { font-size: 1.3rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center mb-4">📍 Réserver un espace WorkNest</h2>
+
+    <div class="text-center mb-3">
+      <button id="googleLogin" class="btn btn-danger">🔐 Connexion avec Google</button>
+      <div id="userInfo" class="mt-2 text-muted"></div>
+    </div>
+
+    <div class="mb-4">
+      <label for="listingSelector" class="form-label">Choisissez un lieu :</label>
+      <select id="listingSelector" class="form-select"></select>
+    </div>
+
+    <div id="calendar"></div>
+  </div>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyAC5iOeLcBabRVft-G_vOSDEgi6ENrb1_c",
+      authDomain: "worknest-ca1e4.firebaseapp.com",
+      databaseURL: "https://worknest-ca1e4-default-rtdb.firebaseio.com",
+      projectId: "worknest-ca1e4",
+      storageBucket: "worknest-ca1e4.appspot.com",
+      messagingSenderId: "702364028315",
+      appId: "1:702364028315:web:demo-firebase-app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    let currentUser = null;
+    let calendar = null;
+    let listings = {};
+
+    // Connexion Google
+    document.getElementById("googleLogin").onclick = () => {
+      auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(res => {
+        currentUser = res.user;
+        document.getElementById("userInfo").innerText = "Connecté : " + currentUser.displayName;
+        loadListings();
+      });
+    };
+
+    // Charger les lieux
+    function loadListings() {
+      const selector = document.getElementById("listingSelector");
+      selector.innerHTML = "";
+      db.ref("listings").once("value", snap => {
+        snap.forEach(child => {
+          const data = child.val();
+          listings[child.key] = data;
+          const option = document.createElement("option");
+          option.value = child.key;
+          option.text = `${data.title} - ${data.rate}€/h`;
+          selector.appendChild(option);
+        });
+        if (selector.options.length > 0) {
+          loadCalendar(selector.value);
+        }
+      });
+    }
+
+    // Sélection d’un lieu
+    document.getElementById("listingSelector").onchange = e => {
+      loadCalendar(e.target.value);
+    };
+
+    function loadCalendar(listingId) {
+      const rate = listings[listingId].rate;
+      if (calendar) calendar.destroy();
+      calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
+        initialView: 'timeGridWeek',
+        slotMinTime: '08:00:00',
+        slotMaxTime: '20:00:00',
+        slotDuration: '01:00:00',
+        selectable: true,
+        nowIndicator: true,
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
+        events: function(fetchInfo, successCallback) {
+          db.ref("bookings").orderByChild("listingId").equalTo(listingId).once("value", snap => {
+            const bookings = [];
+            snap.forEach(child => {
+              const data = child.val();
+              bookings.push({ ...data, color: "#dc3545" });
+            });
+            successCallback(bookings);
+          });
+        },
+        select: function(info) {
+          if (!currentUser) {
+            alert("Veuillez vous connecter d'abord.");
+            return;
+          }
+          const hours = (new Date(info.end) - new Date(info.start)) / (1000 * 60 * 60);
+          const total = rate * hours;
+          const confirmBooking = confirm(`Réserver de ${info.startStr} à ${info.endStr} ?\nDurée : ${hours}h\nTotal : €${total}`);
+          if (confirmBooking) {
+            const booking = {
+              title: currentUser.displayName,
+              start: info.startStr,
+              end: info.endStr,
+              userId: currentUser.uid,
+              userEmail: currentUser.email,
+              listingId,
+              price: total
+            };
+            db.ref("bookings").push().set(booking);
+            calendar.addEvent({ ...booking, color: '#198754' });
+            alert("Réservation confirmée !");
+          }
+        }
+      });
+      calendar.render();
+    }
+  </script>
+</body>
+</html>

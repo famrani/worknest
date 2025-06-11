@@ -1,0 +1,163 @@
+<section class="container text-padding">
+    <div class="container" *ngIf="hostSvc.equipments && hostSvc.equipments.length>0">
+        <h1 class="text-center mb-4">Monetize Your Unused Meeting Room</h1>
+        <p class="lead text-center mb-5">Have a quiet meeting space available during the day? Let others benefit from
+            it.</p>
+        <form [formGroup]="becomeahostForm" (ngSubmit)="onSubmit()" class="container mt-5" *ngIf="hostSvc.equipments">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="roomtitle" class="form-label">Room Title</label>
+                    <input id="roomtitle" class="form-control" formControlName="roomtitle"
+                        placeholder="e.g., Quiet Meeting Room">
+                </div>
+                <div class="col-md-6">
+                    <label for="spacetype" class="form-label">Space Type</label>
+                    <select id="spacetype" class="form-select" formControlName="spacetype"
+                        (change)="onSpaceTypeChange($event)">
+                        <option value="" disabled selected>Select type</option>
+                        <option value="meeting-room">Meeting Room</option>
+                        <option value="apartment">Day Rent Apartment</option>
+                        <option value="private-room">Private Room in House</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="roomdescription" class="form-label">Room Description</label>
+                <textarea id="roomdescription" class="form-control" rows="4" formControlName="roomdescription"
+                    placeholder="Describe the room, features, and ambiance..."></textarea>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="roomaddress" class="form-label">Room Address</label>
+                    <input id="roomaddress" type="text" class="form-control" formControlName="roomaddress"
+                        placeholder="123 Business Street, City" #businessaddress>
+                </div>
+                <div class="col-md-4">
+                    <label for="roomnameornumber" class="form-label">Room Number / Name (optional)</label>
+                    <input id="roomnameornumber" type="text" class="form-control" formControlName="roomnameornumber"
+                        placeholder="Meeting Room A">
+                </div>
+                <div class="col-md-4">
+                    <label for="roomcapacity" class="form-label">Capacity (People)</label>
+                    <input id="roomcapacity" type="number" class="form-control" formControlName="roomcapacity"
+                        placeholder="e.g., 6">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Is the room shared with others?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="isroomshared" formControlName="isroomshared"
+                        [value]="true">
+                    <label class="form-check-label" for="isroomshared">Yes</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="sharedNo" formControlName="isroomshared"
+                        [value]="false">
+                    <label class="form-check-label" for="sharedNo">No</label>
+                </div>
+            </div>
+
+            <!-- Equipments Section -->
+            <div class="mb-3">
+                <label class="form-label">Available Equipment</label>
+                <div class="row">
+                    <ng-container *ngFor="let eq of hostSvc.equipments.slice(0, 6); let i = index">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                    [formControl]="equipmentsFormArray.controls[i]" [id]="'eq' + i">
+                                <label class="form-check-label" [for]="'eq' + i">{{ eq.title }}</label>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div [class.collapse]="!showAllEquipments" class="mt-3" id="showAllEquipments">
+                    <div class="row">
+                        <ng-container *ngFor="let eq of hostSvc.equipments.slice(6); let i = index">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input"
+                                        [formControl]="equipmentsFormArray.controls[i + 6]" [id]="'eq' + (i + 6)">
+                                    <label class="form-check-label" [for]="'eq' + (i + 6)">{{ eq.title }}</label>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-link px-0 mt-2" (click)="toggleEquipments()">
+                    {{ showAllEquipments ? 'Show Less' : 'Show More' }}
+                </button>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="priceHour" class="form-label">Price per Hour (€)</label>
+                    <input id="priceHour" type="number" class="form-control" formControlName="pricehour"
+                        placeholder="e.g., 10">
+                </div>
+                <div class="col-md-4">
+                    <label for="priceDay" class="form-label">Price per Day (€)</label>
+                    <input id="priceDay" type="number" class="form-control" formControlName="priceday"
+                        placeholder="e.g., 50">
+                </div>
+                <div class="col-md-4">
+                    <label for="availability" class="form-label">Availability</label>
+                    <select id="availability" class="form-select" formControlName="availability">
+                        <option value="" disabled selected>Select availability</option>
+                        <option value="Weekdays">Weekdays</option>
+                        <option value="Weekends">Weekends</option>
+                        <option value="Flexible">Flexible</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="accessandrules" class="form-label">Access & Rules</label>
+                <textarea id="accessandrules" class="form-control" rows="3" formControlName="accessandrules"
+                    placeholder="e.g., No smoking, badge required, etc."></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label for="photo" class="form-label">Upload photos of your space</label>
+                <input class="form-control" type="file" id="photo" multiple (change)="uploadFile($event)"
+                    accept="image/*">
+            </div>
+
+            <!-- Preview uploaded photos -->
+            <div class="row" *ngIf="photos.length > 0">
+                <div class="col-md-3 mb-3" *ngFor="let photo of photos">
+                    <img [src]="photo" class="img-fluid rounded shadow" style="height: 150px; object-fit: cover;">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100"
+                [disabled]="becomeahostForm.invalid || !address || photos && photos.length===0">Submit
+                Listing</button>
+
+        </form>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="stripeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="stripeModalLabel">Create Your Stripe Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p class="lead">Would you like to create your Stripe account now to start receiving payments?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Later</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="onSubmit2()">Yes, Create Now</button>
+        </div>
+      </div>
+    </div>
+  </div>

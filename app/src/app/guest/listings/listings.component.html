@@ -1,0 +1,127 @@
+<section class="top-section">
+  <div class="container">
+    <div>
+      <form class="py-4 w-750" [formGroup]="listingForm">
+        <div class="input-group mb-2">
+          <span class="input-group-text"><i class="icon ion-ios-location fs-4"></i></span>
+          <input class="form-control" type="text" placeholder="Sophia Antipolis" #businessaddress
+            formControlName="address">
+        </div>
+
+        <div class="row align-items-end">
+          <div class="col-md-3 mb-2">
+            <div class="input-group">
+              <span class="input-group-text">DATE</span>
+              <input type="date" [class]="listingForm.controls['date1'].invalid ? 'form-control error' : 'form-control'"
+                formControlName="date1" id="date1">
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <div class="input-group">
+              <span class="input-group-text">FROM</span>
+              <input type="time" [class]="listingForm.controls['from'].invalid ? 'form-control error' : 'form-control'"
+                formControlName="from" step="1800">
+            </div>
+            <div *ngIf="listingForm.get('from')?.hasError('notHalfHour') && listingForm.get('from')?.touched"
+              class="text-danger small">
+              Please select a time ending with :00 or :30.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <div class="input-group">
+              <span class="input-group-text">TO</span>
+              <input type="time" [class]="listingForm.controls['to'].invalid ? 'form-control error' : 'form-control'"
+                formControlName="to" step="1800">
+            </div>
+            <div *ngIf="listingForm.get('to')?.hasError('notHalfHour') && listingForm.get('from')?.touched"
+              class="text-danger small">
+              Please select a time ending with :00 or :30.
+            </div>
+            <div *ngIf="listingForm.hasError('timeRangeInvalid') && listingForm.touched" class="text-danger small mb-2">
+              "To" time must be after "From" time.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-2">
+            <button class="btn btn-primary w-100" type="button" (click)="searchListings()"
+              [disabled]="listingForm.invalid">
+              <i class="icon ion-android-search pe-2"></i>SEARCH
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row gy-4 row-cols-1 row-cols-md-2 row-cols-xl-3">
+      <ng-container *ngFor="let location of guestSvc.filteredLocations; let i=index">
+        <ng-container *ngIf="i%3===0">
+          <div class="col" (click)="goToListing(i)">
+            <div class="p-2">
+              <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;"
+                  src="{{location.photos[0]}}">
+                <div class="space-info">
+                  <h5 class="mb-1">{{location.title}}</h5>
+                  <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                    <p>{{location.city}}</p>
+                  </div>
+                  <div class="d-flex">
+                    <p class="fw-bold"><span class="fw-bold me-2">€</span>{{location.priceperhour}}/h</p>
+                    <p class="fw-bold ps-3"><span class="fw-bold me-2">€</span>{{location.priceperday}}/j</p>
+                  </div>
+                  <p>{{location.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="i%3===1">
+          <div class="col" (click)="goToListing(i)">
+            <div class="p-2">
+              <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;"
+                  src="{{location.photos[0]}}">
+                <div class="space-info">
+                  <h5 class="mb-1">{{location.title}}</h5>
+                  <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                    <p>{{location.city}}</p>
+                  </div>
+                  <div class="d-flex">
+                    <p class="fw-bold"><span class="fw-bold me-2">€</span>{{location.priceperhour}}/h</p>
+                    <p class="fw-bold ps-3"><span class="fw-bold me-2">€</span>{{location.priceperday}}/j</p>
+                  </div>
+                  <p>{{location.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="i%3===2">
+          <div class="col" (click)="goToListing(i)">
+            <div class="p-2">
+              <div class="grid-item"><img class="img-fluid d-block w-100 fit-cover" style="height: 200px;"
+                  src="{{location.photos[0]}}">
+                <div class="space-info">
+                  <h5 class="mb-1">{{location.title}}</h5>
+                  <div class="fw-bold d-flex"><i class="icon ion-ios-location me-2 fw-bold"></i>
+                    <p>{{location.city}}</p>
+                  </div>
+                  <div class="d-flex">
+                    <p class="fw-bold"><span class="fw-bold me-2">€</span>{{location.priceperhour}}/h</p>
+                    <p class="fw-bold ps-3"><span class="fw-bold me-2">€</span>{{location.priceperday}}/j</p>
+                  </div>
+                  <p>{{location.description}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="row py-4">
+      <div class="col">
+        <p class="text-center">Sorry - there are no spaces available in this area. Try a different search.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

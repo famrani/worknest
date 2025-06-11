@@ -1,0 +1,85 @@
+<section class="top-section h-screen">
+  <div class="container">
+    <div class="w-900">
+      <div class="row">
+        <!-- Start: images -->
+        <div class="col-12 col-md-6">
+          <div>
+            <div class="carousel slide" data-bs-ride="false" id="carousel-1">
+              <div class="carousel-inner">
+                <ng-container *ngFor="let photo of guestSvc.currentListing.photos; let i=index">
+                  <div [class]="i===0?'carousel-item active':'carousel-item'"><img class="w-100 d-block"
+                      src="{{guestSvc.currentListing.photos[i]}}" alt="Slide Image"></div>
+                </ng-container>
+              </div>
+              <div>
+                <!-- Start: Previous --><a class="carousel-control-prev" href="#carousel-1" role="button"
+                  data-bs-slide="prev"><span class="carousel-control-prev-icon"></span><span
+                    class="visually-hidden">Previous</span></a><!-- End: Previous -->
+                <!-- Start: Next --><a class="carousel-control-next" href="#carousel-1" role="button"
+                  data-bs-slide="next"><span class="carousel-control-next-icon"></span><span
+                    class="visually-hidden">Next</span></a><!-- End: Next -->
+              </div>
+              <div class="carousel-indicators"><button type="button" data-bs-target="#carousel-1" data-bs-slide-to="0"
+                  class="active"></button> <button type="button" data-bs-target="#carousel-1"
+                  data-bs-slide-to="1"></button> <button type="button" data-bs-target="#carousel-1"
+                  data-bs-slide-to="2"></button></div>
+            </div>
+          </div>
+        </div><!-- End: images -->
+        <!-- Start: Main info -->
+        <div class="col-12 col-md-6">
+          <div class="p-3">
+            <h5 class="mt-4">{{guestSvc.currentListing.title}}</h5>
+            <div class="d-flex">
+              <p class="mb-1"><i
+                  class="icon ion-ios-location me-2"></i><strong>{{guestSvc.currentListing.city}}</strong></p>
+            </div>
+            <div class="d-flex">
+              <p class="fw-bold mb-1"><span class="fw-bold me-2">€</span>{{guestSvc.currentListing.priceperhour}} p/hour
+              </p>
+              <p class="fw-bold ps-3 mb-1"><span class="fw-bold me-2">€</span>{{guestSvc.currentListing.priceperday}}
+                p/day</p>
+            </div>
+            <div>
+              <p>{{guestSvc.currentListing.description}}</p>
+            </div>
+            <div class="d-flex align-items-center mt-3 py-1"><img class="host-img">
+              <p class="mb-1 ms-2"><strong>Host:</strong></p>
+              <p class="mb-1 ms-2"><strong>{{guestSvc.currentOwner.fullname}}</strong></p>
+            </div>
+          </div>
+        </div><!-- End: Main info -->
+      </div>
+      <div class="row px-2">
+        <div class="col-12 col-md-6">
+          <div class="p-3"><a (click)="goToCalendar()"><span style="color: rgb(51, 51, 51);">See all availability</span></a>
+            <p class="mt-2 mb-1"><strong>What's included:</strong></p>
+            <ul>
+              <ng-container *ngFor="let equipment of guestSvc.currentEquipments">
+                <li>{{equipment.title}}</li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <!-- Start: book rqst -->
+          <div class="box-white p-3">
+            <h5>Your request</h5>
+            <div class="row">
+              <div class="col">
+                <p class="mb-1"><strong>Date:</strong><span class="mx-2">{{guestSvc.bookingTime.date}}</span></p>
+                <div class="d-inline-flex">
+                  <p class="mb"><strong>From:</strong><span class="mx-2">{{guestSvc.bookingTime.startTime}}</span></p>
+                  <p><strong>To:</strong><span class="mx-2">{{guestSvc.bookingTime.endTime}}</span></p>
+                </div>
+                <p><strong>Cost details: €{{guestSvc.bookingTime.price}}</strong></p><button class="btn btn-primary" type="button" [routerLink]="['/booking-calendar']">Request to
+                  book</button>
+              </div>
+            </div>
+          </div><!-- End: book rqst -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section><!-- End: a place -->

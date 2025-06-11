@@ -1,0 +1,71 @@
+<section class="top-section h-screen mt-5 pt-5">
+  <div class="container">
+    <h4 class="text-center p-4">Update Your&nbsp;<strong>Worknest</strong> Profile</h4>
+    <form class="form-box-2" [formGroup]="accountForm">
+      <div class="row" *ngIf="accountForm">
+        <div class="col-12 col-md-6">
+          <div class="f-group"><label class="form-label"><strong>Email</strong></label><input
+              [class]="accountForm.controls['email'].invalid ?'form-control error':'form-control'" type="email"
+              required="" formControlName="email"></div>
+          <div class="f-group"><label class="form-label"><strong>Telephone</strong></label><input
+              [class]="accountForm.controls['telephone'].invalid ?'form-control error':'form-control'" type="tel"
+              required="" formControlName="telephone"></div>
+          <div class="f-group"><label class="form-label"><strong>Company name</strong></label><input
+              [class]="accountForm.controls['companyname'].invalid ?'form-control error':'form-control'" type="text"
+              required="" formControlName="companyname"></div>
+          <div class="f-group"><label class="form-label"><strong>Social Link</strong></label><input
+              [class]="accountForm.controls['socialnetworklink'].invalid ?'form-control error':'form-control'"
+              type="text" required="" formControlName="socialnetworklink"></div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="f-group"><label class="form-label"><strong>Full name</strong></label><input
+              [class]="accountForm.controls['fullname'].invalid ?'form-control error':'form-control'" type="text"
+              required="" formControlName="fullname"></div>
+          <div class="f-group"><label class="form-label"><strong>Country</strong></label>
+            <select class="form-control" required formControlName="country">
+              <option value="" disabled selected>Select your country</option>
+              <option value="France">France</option>
+              <option value="Germany">Germany</option>
+              <option value="Italy">Italy</option>
+              <option value="Spain">Spain</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="India">India</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Japan">Japan</option>
+              <option value="China">China</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="f-group"><label class="form-label"><strong>Address</strong></label><input
+              [class]="accountForm.controls['address'].invalid ?'form-control error':'form-control'" type="text"
+              required="" formControlName="address" #businessaddress></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-form mt-4" type="submit" [disabled]="accountForm.invalid"
+        (click)="updateProfile()">Save Changes</button>
+    </form>
+  </div>
+</section>
+
+<!-- Profile Updated Modal -->
+<div class="modal fade" id="profileUpdatedModal" tabindex="-1" aria-labelledby="profileUpdatedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border border-primary shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title fw-bold" id="profileUpdatedLabel">Profil mis à jour</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body text-center p-4" style="font-family: 'Catamaran', sans-serif;">
+        <p class="mb-3 fw-semibold">Vos informations personnelles ont été mises à jour avec succès.</p>
+        <p class="fw-light">Merci de maintenir votre profil à jour pour profiter pleinement de l'expérience <strong>Worknest</strong>.</p>
+      </div>
+      <div class="modal-footer justify-content-center border-0 pb-4">
+        <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal" style="font-weight: 500;">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

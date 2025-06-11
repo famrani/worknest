@@ -1,0 +1,97 @@
+<nav class="navbar navbar-expand-lg fixed-top bg-light shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" [routerLink]="['/home']">WorkNest</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#guestNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="guestNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/listings']">Find a Space</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" (click)="becomeaHost()"  *ngIf="!layoutSvc.wnGuest?.fullname">Become a Host</a>
+          <a class="nav-link" (click)="becomeaHost()"  *ngIf="layoutSvc.wnGuest?.fullname">Add a listing</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <!-- User Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            {{ layoutSvc.wnGuest?.fullname || 'Guest' }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li *ngIf="!layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/login']">Login</a>
+            </li>
+            <li *ngIf="!layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/signup']">Signup</a>
+            </li>
+            <li *ngIf="layoutSvc.wnGuest?.fullname">
+              <a class="dropdown-item" [routerLink]="['/changepwd']">Change Password</a>
+              <a class="dropdown-item" [routerLink]="['/profile']">Personal Info</a>
+              <a class="dropdown-item" [routerLink]="['/guest/bookings']">Bookings</a>
+              <a class="dropdown-item" routerLink="/guest/payments">Payments</a>
+              <a class="dropdown-item" routerLink="/messages">Messages</a>
+              <a class="dropdown-item" routerLink="/ratings">Reviews</a>
+
+
+              <hr class="dropdown-divider">
+              <a class="dropdown-item" [routerLink]="['/hostmain']">Switch to Host</a>
+              <a class="dropdown-item text-danger" (click)="logout()">Logout</a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item" [routerLink]="['/faq']">FAQ</a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Language Dropdown -->
+        <li class="nav-item dropdown ms-2">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            🌐 {{ layoutSvc.language.toUpperCase() }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="setLanguage('en')">🇬🇧 English</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('fr')">🇫🇷 Français</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('es')">🇪🇸 Español</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('it')">🇮🇹 Italiano</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('nl')">🇳🇱 Nederlands</a></li>
+            <li><a class="dropdown-item" (click)="setLanguage('de')">🇩🇪 Deutsch</a></li>
+          </ul>
+        </li>
+              </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal for Unlogged Users -->
+<div class="modal fade" id="loginFirstModal" tabindex="-1" aria-labelledby="loginFirstModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-light rounded shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold" id="loginFirstModalLabel">{{"Create Your Account First"|addComponent:componentName|translate}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="fw-semibold">{{"You need an account to list your space and start earning."|addComponent:componentName|translate}}</p>
+        <p>{{"WorkNest connects you with professionals looking for workspaces — create your account in minutes!"|addComponent:componentName|translate}}</p>
+        <div class="d-grid gap-2 mt-4">
+          <a class="btn btn-primary btn-lg" [routerLink]="['/signup']">
+            {{"Create an Account"|addComponent:componentName|translate}}
+          </a>
+          <a class="btn btn-outline-secondary" [routerLink]="['/login']">
+            {{"Already have an account? Sign in"|addComponent:componentName|translate}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
